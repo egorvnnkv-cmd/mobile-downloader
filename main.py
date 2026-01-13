@@ -4,7 +4,10 @@ import threading
 import sys
 import ssl
 from yt_dlp import YoutubeDL
-from moviepy import VideoFileClip
+try:
+    from moviepy.editor import VideoFileClip
+except ImportError:
+    from moviepy import VideoFileClip
 
 # Исправление SSL для скачивания
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -119,5 +122,6 @@ def main(page: ft.Page):
         progress_ring, status_text, ft.Divider(), file_list
     ], horizontal_alignment="center"))
     refresh_files()
+
 
 ft.app(target=main)
