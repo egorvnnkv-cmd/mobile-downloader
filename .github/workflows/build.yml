@@ -2,26 +2,35 @@ name: Build Android APK
 on:
   push:
     branches: [ main ]
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-      - name: Install Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
-          pip install flet
-      - name: Build APK
-        run: flet build apk
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
+          python -m pip install --upgrade pip
+          pip install flet yt-dlp moviepy
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
-          name: mobile-apk
+          channel: 'stable'
+
+      - name: Build APK
+        run: |
+          flet build apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-downloader-apk
           path: build/apk/*.apk
