@@ -1,4 +1,5 @@
 flet
 yt-dlp
-moviepy
-imageio-ffmpeg
+moviepy==1.0/3
+
+
