@@ -5,15 +5,10 @@ import sys
 import ssl
 from yt_dlp import YoutubeDL
 
-# Самый надежный импорт для мобильного Flet
 try:
     from moviepy.editor import VideoFileClip
-except ImportError:
-    try:
-        from moviepy import VideoFileClip
-    except ImportError:
-        # Если совсем беда, импортируем только то, что нужно
-        from moviepy.video.io.VideoFileClip import VideoFileClip
+except Exception:
+    VideoFileClip = None # Если нарезка не подгрузится, приложение хотя бы откроется
 
 # Исправление SSL для скачивания
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -131,5 +126,6 @@ def main(page: ft.Page):
 
 
 ft.app(target=main)
+
 
 
